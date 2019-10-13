@@ -14,30 +14,27 @@ class Transfer
   end
 
   def execute_transaction
-    transfer_count = 0
-
-    # while transfer_count = 0 do 
-      if receiver.status == "closed" 
-        self.status = "rejected"
-        transfer_count += 1
-        p "Transaction rejected. Please check your account balance."
-        # break if transfer_count > 0
-      elsif receiver.balance < amount 
-        self.status = "rejected"
-        transfer_count += 1
-        p "Transaction rejected. Please check your account balance."
-        # break if transfer_count > 0
-      else
+    
+    if valid? && sender.balance > amount && self.status == "pending"
         sender.balance -= amount
         receiver.balance += amount
         self.status = "complete"
-        transfer_count += 1
-        # break if transfer_count > 0
-      end
-    # end
+    elsif valid? == false || sender.balance < amount
+      self.status = "rejected"
+      "Transaction rejected. Please check your account balance."
+    else
+      "Transaction rejected. Please check your account balance."
+    end
   end
 
   def reverse_transfer
+    if valid? && sender.balance > amount && self.status == "complete"
+      sender.balance += amount
+      receiver.balance -= amount
+      self.status = "reversed"
+  else
+    "Transaction rejected. Please check your account balance."
+  end
   end
 
   def self.all
