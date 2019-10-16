@@ -1,6 +1,4 @@
 class Transfer
-  # your code here
-  class Transfer
   attr_reader :amount, :sender, :receiver
   attr_accessor :status
 
@@ -39,6 +37,4 @@ class Transfer
     self.status = "rejected"
     "Transaction rejected. Please check your account balance."
   end
-end
- 
 end
